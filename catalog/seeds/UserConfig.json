@@ -1,0 +1,24 @@
+[
+    {
+        "model": "catalog.UserConfig",
+        "pk": 1,
+        "fields": {
+          "user_id" : 1,
+          "max_mid_amount" :2000,
+          "left_bid_amount" : 1500,
+          "fund" : 10000,
+          "created_at" : "2021-07-20 00:01:00"
+         }
+    },
+    {
+      "model": "catalog.UserConfig",
+      "pk": 2,
+      "fields": {
+        "user_id" : 2,
+        "max_mid_amount" :4000,
+        "left_bid_amount" : 3000,
+        "fund" : 15000,
+        "created_at" : "2021-07-20 00:01:00"
+       }
+  }
+]

@@ -1,0 +1,86 @@
+[
+    {
+        "model": "catalog.Item",
+        "pk": 1,
+        "fields": {
+          "name" : "Victorian 15ct High Carat Large Cabochon Garnet Pendant With Grape Design",
+          "description" :"A stunning rare Victorian cabochon garnet set into at least 15ct yellow gold Not hallmarked but tested as such.",
+          "image_path" : "images/items/item1.jpg",
+          "min_price" : 1000,
+          "last_auction_price" : 1100,
+          "auction_start_date_time" : "2021-07-20 00:01:00",
+          "auction_finish_date_time" : "2021-07-22 00:01:00",
+          "created_at" : "2021-07-20 00:01:00"
+         }
+    },
+    {
+        "model": "catalog.Item",
+        "pk": 2,
+        "fields": {
+          "name" : "Fine 19thc Pair Emile Guillemin Sculptures Silvered Bronze ",
+          "description" :"Pair of silver bronze sculptures signed Emile Guillemin representing a musical man and woman, scantily dressed.",
+          "image_path" : "images/items/item2.jpg",
+          "min_price" : 800,
+          "last_auction_price" : 801,
+          "auction_start_date_time" : "2021-07-20 00:01:00",
+          "auction_finish_date_time" : "2021-07-22 00:01:00",
+          "created_at" : "2021-07-20 00:01:00"
+         }
+    },
+    {
+        "model": "catalog.Item",
+        "pk": 3,
+        "fields": {
+          "name" : "Pair Of 18th Century George III Carved Mahogany Chippendale Chairs",
+          "description" :"A simply superb pair of carved George III mahogany chairs, C.1770.",
+          "image_path" : "images/items/item3.jpg",
+          "min_price" : 7000,
+          "last_auction_price" : null,
+          "auction_start_date_time" : "2021-07-20 00:01:00",
+          "auction_finish_date_time" : "2021-07-22 00:01:00",
+          "created_at" : "2021-07-20 00:01:00"
+         }
+    },
+    {
+        "model": "catalog.Item",
+        "pk": 4,
+        "fields": {
+          "name" : "Edwardian 1920s 18ct Platinum Art Deco Pave Sapphire Old Cut Diamond 1.90 Ring",
+          "description" :"The is a genuine Edwardian/ Art deco period piece- not a reproduction ie. 'in the style of', these are very rare to find",
+          "image_path" : "images/items/item4.jpg",
+          "min_price" : 4000,
+          "last_auction_price" : null,
+          "auction_start_date_time" : "2021-07-20 00:01:00",
+          "auction_finish_date_time" : "2021-07-22 00:01:00",
+          "created_at" : "2021-07-20 00:01:00"
+         }
+    },
+    {
+        "model": "catalog.Item",
+        "pk": 5,
+        "fields": {
+          "name" : "Georgian Mahogany Miniature Chest",
+          "description" :"An Attractive And Good Quality Early 19th Century Georgian Mahogany Miniature Chest Having well Figured Top Over ",
+          "image_path" : "images/items/item5.jpg",
+          "min_price" : 2000,
+          "last_auction_price" : 2201,
+          "auction_start_date_time" : "2021-07-20 00:01:00",
+          "auction_finish_date_time" : "2021-07-22 00:01:00",
+          "created_at" : "2021-07-20 00:01:00"
+         }
+    },
+    {
+        "model": "catalog.Item",
+        "pk": 6,
+        "fields": {
+          "name" : "Antique Gilt Green Glass Scent Perfume Bottle Cylindrical Portrait Painted Lady",
+          "description" :"Antique Green / Gilt Glass Scent / Perfume Bottle with stopper decorated with a beautiful",
+          "image_path" : "images/items/item6.jpg",
+          "min_price" : 200,
+          "last_auction_price" : 242,
+          "auction_start_date_time" : "2021-07-20 00:01:00",
+          "auction_finish_date_time" : "2021-07-22 00:01:00",
+          "created_at" : "2021-07-20 00:01:00"
+         }
+    }
+]
