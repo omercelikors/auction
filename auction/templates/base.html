@@ -36,7 +36,7 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Configs</a>
           </li>
-          <li class="nav-item dropdown">
+          <!-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
               Ordering
@@ -46,12 +46,20 @@
               <a class="dropdown-item" href="#">Descending Price</a>
               <a class="dropdown-item" href="#">Newest</a>
             </div>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a class="nav-link" href="#">Sign out</a>
           </li>
         </ul> 
         <form class="form-inline my-2 my-lg-0" id="search_form">
+          <div class="form-group mr-3">
+            <label class="mr-2" for="sel1">Select order type:</label>
+            <select class="form-control" id="order_type" name="order_type" onchange="api_get_filtered_items()">
+              <option value="1">Newest</option>
+              <option value="2">Price dsc</option>
+              <option value="3">Price asc</option>
+            </select>
+          </div> 
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="search_item_input">
           <button class="btn btn-outline-success my-2 my-sm-0" onclick="api_get_filtered_items()" type="submit">Search</button>
         </form>

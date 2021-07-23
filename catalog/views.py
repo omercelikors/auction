@@ -4,7 +4,7 @@ from django.http import JsonResponse
 import json
 from django.templatetags.static import static
 from django.urls import reverse
-from django.db.models import Q
+from django.db.models import F, Q, When, Case, Value
 
 # Create your views here.
 def show_items(request):
@@ -12,25 +12,44 @@ def show_items(request):
 
 def api_get_items(request):
 	if request.is_ajax and request.method == "GET":
-		page_number = int(request.GET.get("pageNumber", 0))
+		page_number = int(request.GET.get("pageNumber", 1))
 		page_size = int(request.GET.get("pageSize", 10))
+		query = request.GET.get("query",'')
+		order_type = request.GET.get("order_type",1)
+
 		start_number = ((page_number)-1) * page_size
 		end_number = start_number + page_size
 		prefix = 'https://' if request.is_secure() else 'http://'
-		query = request.GET.get("query")
-		if query:
-			query_elements = query.split(' ')
-			query = Q()
-			for query_element in query_elements:
-				query |= Q(name__icontains=query_element)
-				query |= Q(description__icontains=query_element)
-			total_item_number = Item.objects.filter(query).count()
-			items = Item.objects.filter(query).order_by('-id')[start_number:end_number].values()
-		else:
-			total_item_number = Item.objects.all().count()
-			items = Item.objects.order_by('-id')[start_number:end_number].values()
-		
-		
+
+		query_elements = query.split(' ')
+		query = Q()
+		for query_element in query_elements:
+			query |= Q(name__icontains=query_element)
+			query |= Q(description__icontains=query_element)
+		total_item_number = Item.objects.filter(query).filter(status=1).count()
+		if order_type == '1':
+			items = Item.objects.filter(query).filter(status=1).order_by('-id')[start_number:end_number].values()
+		elif order_type == '2':
+			items = Item.objects.filter(query).filter(status=1).annotate(
+																		sort_order_price=Case(
+																		When(last_auction_price=None, then=('min_price')),
+																			default=('last_auction_price')
+																		)
+																		).order_by(
+																			'-sort_order_price',
+																			'-id'
+																		)[start_number:end_number].values()
+		elif order_type == '3':
+			items = Item.objects.filter(query).filter(status=1).annotate(
+																		sort_order_price=Case(
+																		When(last_auction_price=None, then=('min_price')),
+																			default=('last_auction_price')
+																		)
+																		).order_by(
+																			'sort_order_price',
+																			'-id'
+																		)[start_number:end_number].values()
+
 		for item in items:
 			item['image_path'] = prefix + request.get_host() + static(item['image_path'])
 			item['url'] = prefix + request.get_host() + reverse('show_item_detail', args=(item['id'],))
@@ -50,7 +69,7 @@ def api_get_items(request):
 		return JsonResponse(response_data, status=200, safe=False)
 	else:
 		return JsonResponse({"error": "error"}, status=400)
-	
+	# any error
 	return JsonResponse({"error": "any error is occured"}, status=400)
 
 def show_item_detail(request, item_id):

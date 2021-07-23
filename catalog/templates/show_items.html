@@ -17,7 +17,7 @@
 {% block js %}
 <script>
   $(document).ready(function(){
-      request_and_paginate()
+      api_get_filtered_items()
       $("#search_item_input").val('')
       $("#search_form").submit(function(e){
         e.preventDefault();
@@ -43,9 +43,9 @@
         }
   }
 
-  function request_and_paginate(query=""){
+  function request_and_paginate(query="", order_type=1){
           $('#pagination_container').pagination({
-              dataSource: 'http://127.0.0.1:8000/catalog/api/get/items?query='+query,
+              dataSource: 'http://127.0.0.1:8000/catalog/api/get/items?query='+query+'&order_type='+order_type,
               locator: 'data.results',
               totalNumberLocator: function(response) {
                 return response.total_item_number;
@@ -56,7 +56,7 @@
               autoHidePrevious: true,
               autoHideNext: true,
               showNavigator: true,
-              formatNavigator: '<span style="color: #f00"><%= currentPage %></span> / <%= totalPage %> pages, <%= totalNumber %> entries',
+              formatNavigator: '<span style="color: #f00"><%= currentPage %></span> / <%= totalPage %> pages, <%= totalNumber %> items',
               className: 'paginationjs-theme-blue',
               // ajax: {
               //   beforeSend: function() {
@@ -71,7 +71,7 @@
   }
 
   function api_get_filtered_items(){
-      request_and_paginate($("#search_item_input").val())
+      request_and_paginate($("#search_item_input").val(), $( "#order_type" ).val())
   }
 </script>
 {% endblock %}
