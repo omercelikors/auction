@@ -5,6 +5,10 @@ import json
 from django.templatetags.static import static
 from django.urls import reverse
 from django.db.models import F, Q, When, Case, Value
+import sys
+from django.core.serializers import serialize
+from django.http import HttpResponse
+from django.forms.models import model_to_dict
 
 # Create your views here.
 def show_items(request):
@@ -74,3 +78,23 @@ def api_get_items(request):
 
 def show_item_detail(request, item_id):
 	return render(request, 'show_item_detail.html', {'item_id':item_id})
+
+def api_get_item(request):
+	if request.is_ajax and request.method == "GET":
+		
+		item_id = int(request.GET.get("item_id", None))
+		item = Item.objects.get(pk=item_id)
+		
+		prefix = 'https://' if request.is_secure() else 'http://'
+		item.image_path = prefix + request.get_host() + static(item.image_path)
+		item.auction_start_date_time = item.auction_start_date_time.strftime("%Y-%m-%d %H:%M:%S")
+		item.auction_finish_date_time = item.auction_finish_date_time.strftime("%Y-%m-%d %H:%M:%S")
+
+		response_data = {}
+		response_data['result'] = model_to_dict(item)
+		response_data['message'] = "Get item is OK"
+		return JsonResponse(response_data, status=200)
+	else:
+		return JsonResponse({"error": "error"}, status=400)
+	# any error
+	return JsonResponse({"error": "any error is occured"}, status=400)

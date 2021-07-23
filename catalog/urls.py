@@ -5,6 +5,7 @@ urlpatterns = [
     path('show/items', views.show_items, name='show_items'),
     path('api/get/items', views.api_get_items, name='api_get_items'),
     path('show/item/detail/<int:item_id>', views.show_item_detail, name='show_item_detail'),
+    path('api/get/item', views.api_get_item, name='api_get_item'),
     # path('show/all/apis', views.show_all_apis, name='show_all_apis'),
     # path('show/all/crawler-links', views.show_all_crawler_links, name='show_all_crawler_links'),
     # path('show/all/crg-has-crawlers', views.show_all_crg_has_crawlers, name='show_all_crg_has_crawlers'),

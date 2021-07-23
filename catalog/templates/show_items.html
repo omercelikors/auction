@@ -31,11 +31,12 @@
                                                   <div class="bg-white rounded shadow-sm">
                                                     <img src="${results[i].image_path}" alt="${results[i].name}" class="item_img img-fluid card-img-top">
                                                     <div class="p-4">
-                                                      <h5 class="name_content"> <a href="${results[i].url}" class="text-dark">${results[i].name.length > 90 ? results[i].name.substring(0,90) +"..." : results[i].name}</a></h5>
+                                                      <h5 class="name_content"> <a href="#" class="text-dark">${results[i].name.length > 90 ? results[i].name.substring(0,90) +"..." : results[i].name}</a></h5>
                                                       <p class="description_content small text-muted mb-0">${results[i].description.length > 150 ? results[i].description.substring(0,150) +"..." : results[i].description}</p>
+                                                      <div class="badge ${results[i].auction_badge_color} px-3 rounded-pill font-weight-normal">${results[i].auction_badge}</div>
                                                       <div class="d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">
-                                                        <p class="small mb-0"><i class="fa fa-picture-o mr-2"></i><span class="font-weight-bold">$${results[i].last_price}</span></p>
-                                                        <div class="badge ${results[i].auction_badge_color} px-3 rounded-pill font-weight-normal">${results[i].auction_badge}</div>
+                                                        <p class="small mb-0"><span class="font-weight-bold">$${results[i].last_price}</span></p>
+                                                        <div><a class="btn btn-outline-primary" href="${results[i].url}" role="button">Bid Now</a></div>
                                                       </div>
                                                     </div>
                                                 </div>`
@@ -50,7 +51,7 @@
               totalNumberLocator: function(response) {
                 return response.total_item_number;
               },
-              pageSize: 2,
+              pageSize: 10,
               pageNumber:1,
               pageRange : 2,
               autoHidePrevious: true,
