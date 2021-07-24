@@ -29,19 +29,27 @@
             success: function (data) {
                 // Handle success here
                 //console.log(data.result)
-                render_item(data.result)
-                if (data.result.auto_bidding_status == 1){
+                render_item(data.result.item)
+                render_bid_history(data.result.item_bid_amounts)
+                if (data.result.item.auto_bidding_status == 1){
                     $('#auto_bidding').prop('checked', true);
                 }else{
                     $('#auto_bidding').prop('checked', false);
                 }
-                countdown_timer(data.result.auction_finish_date_time)
+                countdown_timer(data.result.item.auction_finish_date_time)
             },
             cache: false
           }).fail(function (jqXHR, textStatus, error) {
               // Handle error here
               console.log(error)
           });
+   }
+   function render_bid_history(item_bid_amounts){
+        for (let i = 0; i < item_bid_amounts.length; i++){
+            $("#bid_history").append(
+                                        `<p><b>Amout: $${item_bid_amounts[i].bid_amount} ->></b> Bidding Date: ${item_bid_amounts[i].created_at}</p>`
+                                    )
+        }
    }
 
    function render_item(result){
@@ -76,9 +84,7 @@
                                           
                                               <div class="col-md-7">
                                                   <img src="${result.image_path}" alt="${result.name}" class="rounded">
-                                                  <div class="project-info-box">
-                                                      <p><b>Categories:</b> Design, Illustration</p>
-                                                      <p><b>Skills:</b> Illustrator</p>
+                                                  <div class="project-info-box" id="bid_history">
                                                   </div><!-- / project-info-box -->
                                               </div><!-- / column -->
                                           </div>
