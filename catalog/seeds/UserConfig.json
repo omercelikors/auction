@@ -3,7 +3,7 @@
         "model": "catalog.UserConfig",
         "pk": 1,
         "fields": {
-          "user_id" : 1,
+          "user_id" : 2,
           "max_mid_amount" :2000,
           "left_bid_amount" : 1500,
           "fund" : 10000,
@@ -14,7 +14,7 @@
       "model": "catalog.UserConfig",
       "pk": 2,
       "fields": {
-        "user_id" : 2,
+        "user_id" : 3,
         "max_mid_amount" :4000,
         "left_bid_amount" : 3000,
         "fund" : 15000,

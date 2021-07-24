@@ -4,10 +4,8 @@ from django.http import JsonResponse
 import json
 from django.templatetags.static import static
 from django.urls import reverse
-from django.db.models import F, Q, When, Case, Value
+from django.db.models import Q, When, Case
 import sys
-from django.core.serializers import serialize
-from django.http import HttpResponse
 from django.forms.models import model_to_dict
 
 # Create your views here.
@@ -83,18 +81,52 @@ def api_get_item(request):
 	if request.is_ajax and request.method == "GET":
 		
 		item_id = int(request.GET.get("item_id", None))
-		item = Item.objects.get(pk=item_id)
+		item = Item.objects.values().get(pk=item_id)
+
+		current_user = request.user
+		item_user_auto_bid_case = ItemUserAutoBidCase.objects.filter(user=current_user, item=item['id']).exists()
+		if item_user_auto_bid_case:
+			item_user_auto_bid_case = ItemUserAutoBidCase.objects.filter(user=current_user, item=item['id']).first()
+			auto_bidding_status = item_user_auto_bid_case.auto_bidding_status
+		else:
+			auto_bidding_status = 0
 		
+		item_bid_amounts = ItemUserBidAmount.objects.filter(item=item['id']).values()
 		prefix = 'https://' if request.is_secure() else 'http://'
-		item.image_path = prefix + request.get_host() + static(item.image_path)
-		item.auction_start_date_time = item.auction_start_date_time.strftime("%Y-%m-%d %H:%M:%S")
-		item.auction_finish_date_time = item.auction_finish_date_time.strftime("%Y-%m-%d %H:%M:%S")
+		item['image_path'] = prefix + request.get_host() + static(item['image_path'])
+		item['auction_start_date_time'] = item['auction_start_date_time'].strftime("%Y-%m-%d %H:%M:%S")
+		item['auction_finish_date_time'] = item['auction_finish_date_time'].strftime("%Y-%m-%d %H:%M:%S")
+		item['auto_bidding_status'] = auto_bidding_status
 
 		response_data = {}
-		response_data['result'] = model_to_dict(item)
+		response_data['result'] = item
 		response_data['message'] = "Get item is OK"
 		return JsonResponse(response_data, status=200)
 	else:
 		return JsonResponse({"error": "error"}, status=400)
 	# any error
 	return JsonResponse({"error": "any error is occured"}, status=400)
+
+def api_bid_now(request):
+	print(request.user.id)
+
+def api_auto_bidding(request):
+	item_id = int(request.GET.get("item_id", None))
+	auto_bidding_status = int(request.GET.get("auto_bidding_status", None))
+	item = Item.objects.get(pk=item_id)
+	current_user = request.user
+	item_user_auto_bid_case = ItemUserAutoBidCase.objects.filter(user=current_user, item=item).exists()
+	if item_user_auto_bid_case:
+		# update
+		item_user_auto_bid_case = ItemUserAutoBidCase.objects.filter(user=current_user, item=item).first()
+		item_user_auto_bid_case.auto_bidding_status = auto_bidding_status
+		item_user_auto_bid_case.save()
+	else:
+		# create
+		item_user_auto_bid_case = ItemUserAutoBidCase(user=current_user, item=item, auto_bidding_status=auto_bidding_status)
+		item_user_auto_bid_case.save()
+
+	response_data = {}
+	response_data['result'] = True
+	response_data['message'] = "Auto bid update is OK"
+	return JsonResponse(response_data, status=200)

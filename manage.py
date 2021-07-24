@@ -27,7 +27,6 @@ if __name__ == '__main__':
 # python manage.py loaddata catalog/seeds/UserConfig.json
 # python manage.py loaddata catalog/seeds/User.json
 # python manage.py loaddata catalog/seeds/Group.json
-# python manage.py loaddata catalog/seeds/UserGroup.json
 # python manage.py createsuperuser
 # python manage.py runserver
 # http://127.0.0.1:8000/admin/

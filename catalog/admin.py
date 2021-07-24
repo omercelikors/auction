@@ -6,4 +6,5 @@ from .models import *
 
 admin.site.register(Item)
 admin.site.register(UserConfig)
-admin.site.register(ItemUser)
+admin.site.register(ItemUserBidAmount)
+admin.site.register(ItemUserAutoBidCase)
