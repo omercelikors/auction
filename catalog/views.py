@@ -6,6 +6,7 @@ from django.templatetags.static import static
 from django.urls import reverse
 from django.db.models import Q, When, Case
 import sys
+from catalog.validations import UserConfigValidation
 
 # Create your views here.
 def show_items(request):
@@ -233,5 +234,47 @@ def api_get_bid_history(request):
 		response_data['result']['item_bid_amounts'] = list(item_bid_amounts)
 		response_data['message'] = "Get bid history is OK"
 		return JsonResponse(response_data, status=200)
+	else:
+		return JsonResponse({"error": "error"}, status=400)
+
+def show_config(request, user_id):
+	return render(request, 'show_user_config.html')
+
+def api_get_config(request):
+	if request.is_ajax and request.method == "GET" and request.user.is_authenticated:
+		user_config = UserConfig.objects.values().get(pk=request.user.config.id)
+		response_data = {}
+		response_data['result'] = {}
+		response_data['result']['user_config'] = user_config
+		response_data['message'] = "Get user config is OK"
+		return JsonResponse(response_data, status=200)
+	else:
+		return JsonResponse({"error": "error"}, status=400)
+
+def api_update_config(request):
+	if request.is_ajax and request.method == "POST" and request.user.is_authenticated:
+
+		data = json.loads(request.body)
+		fund = data.get('fund', None)
+		max_bid_amount = data.get('max_bid_amount', None)
+
+		user_config_validation = UserConfigValidation(fund , max_bid_amount)
+		validation_messages = user_config_validation.main()
+
+		if not validation_messages:
+			user_config = UserConfig.objects.get(pk=request.user.config.id)
+			user_config.fund = fund
+			user_config.max_bid_amount = max_bid_amount
+			user_config.save()
+
+			response_data = {}
+			response_data['result'] = True
+			response_data['message'] = "Updating user config is OK"
+			return JsonResponse(response_data, status=200)
+		else:
+			response_data = {}
+			response_data['result'] = False
+			response_data['messages'] = validation_messages
+			return JsonResponse(response_data, status=400)
 	else:
 		return JsonResponse({"error": "error"}, status=400)

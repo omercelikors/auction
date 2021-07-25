@@ -24,7 +24,7 @@ class Item(models.Model):
 
 class UserConfig(models.Model):
     id = models.BigAutoField(primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+    user = models.OneToOneField(User, on_delete=models.DO_NOTHING, related_name='config')
     max_bid_amount = models.FloatField(blank=True, null=True)
     left_bid_amount = models.FloatField(blank=True, null=True)
     fund = models.FloatField(blank=False, null=False)

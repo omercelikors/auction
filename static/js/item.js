@@ -3,7 +3,7 @@ $(document).ready(function(){
     $("#search_item_input").val('')
     $("#search_form").submit(function(e){
       e.preventDefault();
-  });
+    });
 });
 
 function render_items(results){
