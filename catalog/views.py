@@ -74,7 +74,7 @@ def api_get_items(request):
 	return JsonResponse({"error": "any error is occured"}, status=400)
 
 def show_item_detail(request, item_id):
-	return render(request, 'show_item_detail.html', {'item_id':item_id})
+	return render(request, 'show_item_detail.html')
 
 def api_get_item(request):
 	if request.is_ajax and request.method == "GET" and request.user.is_authenticated:
@@ -125,7 +125,12 @@ def api_bid_now(request):
 			return JsonResponse(response_data, status=200)
 		else:
 			response_data['message'] = current_user_result
-			return JsonResponse(response_data, status=400)
+			return JsonResponse(response_data, status=206)
+	else:
+		response_data = {}
+		response_data['result'] = None
+		response_data['message'] = "Error is occured"
+		return JsonResponse(response_data, status=400)
 
 def do_bid_actions(user_id, item_id, bot_user=False):
 	user = User.objects.get(pk=user_id)
@@ -212,3 +217,21 @@ def api_auto_bidding(request):
 		response_data['result'] = True
 		response_data['message'] = "Auto bid update is OK"
 		return JsonResponse(response_data, status=200)
+
+def api_get_bid_history(request):
+	if request.is_ajax and request.method == "GET" and request.user.is_authenticated:
+		item_id = int(request.GET.get("item_id", None))
+		item = Item.objects.get(pk=item_id)
+		
+		item_bid_amounts = ItemUserBidAmount.objects.filter(item=item_id).order_by('-id').values()
+		for item_bid_amount in item_bid_amounts:
+			item_bid_amount['created_at'] = item_bid_amount['created_at'].strftime("%Y-%m-%d %H:%M:%S")
+
+		response_data = {}
+		response_data['result'] = {}
+		response_data['result']['last_auction_price'] = item.last_auction_price
+		response_data['result']['item_bid_amounts'] = list(item_bid_amounts)
+		response_data['message'] = "Get bid history is OK"
+		return JsonResponse(response_data, status=200)
+	else:
+		return JsonResponse({"error": "error"}, status=400)

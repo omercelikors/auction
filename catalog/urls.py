@@ -8,6 +8,7 @@ urlpatterns = [
     path('api/get/item', views.api_get_item, name='api_get_item'),
     path('api/bid/now', views.api_bid_now, name='api_bid_now'),
     path('api/auto/bidding', views.api_auto_bidding, name='api_auto_bidding'),
+    path('api/get/bid/history', views.api_get_bid_history, name='api_get_bid_history'),
     # path('show/all/apis', views.show_all_apis, name='show_all_apis'),
     # path('show/all/crawler-links', views.show_all_crawler_links, name='show_all_crawler_links'),
     # path('show/all/crg-has-crawlers', views.show_all_crg_has_crawlers, name='show_all_crg_has_crawlers'),
