@@ -6,7 +6,6 @@ Some important commands
 python manage.py makemigrations catalog
 python manage.py migrate
 python manage.py loaddata catalog/seeds/Item.json
-python manage.py loaddata catalog/seeds/UserConfig.json
 python manage.py loaddata catalog/seeds/User.json
 python manage.py loaddata catalog/seeds/Group.json
 python manage.py createsuperuser
