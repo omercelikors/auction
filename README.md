@@ -1,2 +1,2 @@
 # auction
-This is a test project.
+This project is written with Django Framework.
